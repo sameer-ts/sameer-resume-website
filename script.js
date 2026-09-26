@@ -1,55 +1,391 @@
+/* =====================================
+   SAMEER S - PORTFOLIO JAVASCRIPT
+===================================== */
+
+
+/* =====================================
+   CURRENT YEAR
+===================================== */
+
 const year = document.getElementById("year");
-year.textContent = new Date().getFullYear();
 
-// Visitor tracking setup:
-// 1. Deploy the Google Apps Script in visitor-tracker.gs as a Web App.
-// 2. Paste the Web App URL below.
-const TRACKING_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
-
-async function getVisitorDetails() {
-  let ip = "Unavailable";
-  try {
-    const r = await fetch("https://api64.ipify.org?format=json", { cache: "no-store" });
-    ip = (await r.json()).ip || ip;
-  } catch (_) {}
-
-  const ua = navigator.userAgent;
-  const details = {
-    time: new Date().toISOString(),
-    ip,
-    page: location.href,
-    referrer: document.referrer || "Direct visit",
-    language: navigator.language || "Unknown",
-    screen: `${screen.width}x${screen.height}`,
-    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Unknown",
-    userAgent: ua,
-    device: /Mobi|Android/i.test(ua) ? "Mobile" : "Desktop/Laptop"
-  };
-
-  if (TRACKING_URL && !TRACKING_URL.includes("PASTE_YOUR")) {
-    try {
-      await fetch(TRACKING_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(details)
-      });
-    } catch (_) {}
-  }
+if (year) {
+    year.textContent = new Date().getFullYear();
 }
-getVisitorDetails();
 
-const modal = document.getElementById("resumeModal");
-const openers = [document.getElementById("viewResumeBtn"), document.getElementById("viewResumeBtn2")];
-const closeBtn = document.getElementById("closeResume");
-openers.forEach(btn => btn?.addEventListener("click", () => {
-  modal.classList.add("show");
-  modal.setAttribute("aria-hidden", "false");
-}));
-closeBtn?.addEventListener("click", () => {
-  modal.classList.remove("show");
-  modal.setAttribute("aria-hidden", "true");
+
+/* =====================================
+   SKILL BAR ANIMATION
+===================================== */
+
+const skillBars =
+    document.querySelectorAll(".bar-fill");
+
+
+const skillObserver =
+    new IntersectionObserver(
+        function(entries, observer) {
+
+            entries.forEach(function(entry) {
+
+                if (entry.isIntersecting) {
+
+                    const width =
+                        entry.target.dataset.width;
+
+                    entry.target.style.width =
+                        width;
+
+                    observer.unobserve(
+                        entry.target
+                    );
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.3
+        }
+    );
+
+
+skillBars.forEach(function(bar) {
+
+    skillObserver.observe(bar);
+
 });
-modal?.addEventListener("click", e => {
-  if (e.target === modal) closeBtn.click();
+
+
+/* =====================================
+   SCROLL REVEAL
+===================================== */
+
+const revealElements =
+    document.querySelectorAll(
+        ".info-card, .project-showcase, .journey-item, .skill, .resume-box"
+    );
+
+
+revealElements.forEach(function(element) {
+
+    element.style.opacity = "0";
+
+    element.style.transform =
+        "translateY(25px)";
+
+    element.style.transition =
+        "opacity 0.7s ease, transform 0.7s ease";
+
 });
+
+
+const revealObserver =
+    new IntersectionObserver(
+        function(entries, observer) {
+
+            entries.forEach(function(entry) {
+
+                if (entry.isIntersecting) {
+
+                    entry.target.style.opacity =
+                        "1";
+
+                    entry.target.style.transform =
+                        "translateY(0)";
+
+                    observer.unobserve(
+                        entry.target
+                    );
+
+                }
+
+            });
+
+        },
+        {
+            threshold: 0.15
+        }
+    );
+
+
+revealElements.forEach(function(element) {
+
+    revealObserver.observe(element);
+
+});
+
+
+/* =====================================
+   RIGHT CLICK DISABLED
+===================================== */
+
+document.addEventListener(
+    "contextmenu",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+/* =====================================
+   TEXT SELECTION DISABLED
+===================================== */
+
+document.addEventListener(
+    "selectstart",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+/* =====================================
+   COPY DISABLED
+===================================== */
+
+document.addEventListener(
+    "copy",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+/* =====================================
+   CUT DISABLED
+===================================== */
+
+document.addEventListener(
+    "cut",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+/* =====================================
+   DRAG DISABLED
+===================================== */
+
+document.addEventListener(
+    "dragstart",
+    function(event) {
+
+        event.preventDefault();
+
+    }
+);
+
+
+/* =====================================
+   KEYBOARD SHORTCUT PROTECTION
+===================================== */
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        const key =
+            event.key.toLowerCase();
+
+
+        /* Ctrl+C */
+
+        if (
+            event.ctrlKey &&
+            key === "c"
+        ) {
+            event.preventDefault();
+        }
+
+
+        /* Ctrl+X */
+
+        if (
+            event.ctrlKey &&
+            key === "x"
+        ) {
+            event.preventDefault();
+        }
+
+
+        /* Ctrl+S */
+
+        if (
+            event.ctrlKey &&
+            key === "s"
+        ) {
+            event.preventDefault();
+        }
+
+
+        /* Ctrl+P */
+
+        if (
+            event.ctrlKey &&
+            key === "p"
+        ) {
+
+            event.preventDefault();
+
+            alert(
+                "Printing is disabled. This resume is view-only."
+            );
+        }
+
+
+        /* Ctrl+U */
+
+        if (
+            event.ctrlKey &&
+            key === "u"
+        ) {
+            event.preventDefault();
+        }
+
+
+        /* Ctrl+Shift+I */
+
+        if (
+            event.ctrlKey &&
+            event.shiftKey &&
+            key === "i"
+        ) {
+            event.preventDefault();
+        }
+
+
+        /* Ctrl+Shift+J */
+
+        if (
+            event.ctrlKey &&
+            event.shiftKey &&
+            key === "j"
+        ) {
+            event.preventDefault();
+        }
+
+
+        /* Ctrl+Shift+C */
+
+        if (
+            event.ctrlKey &&
+            event.shiftKey &&
+            key === "c"
+        ) {
+            event.preventDefault();
+        }
+
+
+        /* F12 */
+
+        if (event.key === "F12") {
+
+            event.preventDefault();
+
+        }
+
+    }
+);
+
+
+/* =====================================
+   VISIBILITY PROTECTION
+===================================== */
+
+document.addEventListener(
+    "visibilitychange",
+    function() {
+
+        if (document.hidden) {
+
+            document.body.classList.add(
+                "page-hidden"
+            );
+
+        } else {
+
+            document.body.classList.remove(
+                "page-hidden"
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================
+   SIMPLE DEVTOOLS DETECTION
+===================================== */
+
+setInterval(function() {
+
+    const widthDifference =
+        window.outerWidth -
+        window.innerWidth;
+
+    const heightDifference =
+        window.outerHeight -
+        window.innerHeight;
+
+
+    if (
+        widthDifference > 160 ||
+        heightDifference > 160
+    ) {
+
+        document.body.classList.add(
+            "page-hidden"
+        );
+
+    } else {
+
+        document.body.classList.remove(
+            "page-hidden"
+        );
+
+    }
+
+}, 1000);
+
+
+/* =====================================
+   MOUSE PARALLAX
+===================================== */
+
+document.addEventListener(
+    "mousemove",
+    function(event) {
+
+        const x =
+            (event.clientX /
+            window.innerWidth - 0.5) * 10;
+
+        const y =
+            (event.clientY /
+            window.innerHeight - 0.5) * 10;
+
+
+        const profile =
+            document.querySelector(".profile");
+
+
+        if (profile) {
+
+            profile.style.transform =
+                `translate(${x}px, ${y}px)`;
+
+        }
+
+    }
+);
